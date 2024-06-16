@@ -1,0 +1,27 @@
+# Use an official Ubuntu base image
+FROM ubuntu:20.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update, upgrade, and install necessary packages including systemd, nano, and wget
+RUN apt-get update && \
+    apt-get full-upgrade -y && \
+    apt-get -y dist-upgrade && \
+    apt-get -y autoremove && \
+    apt-get install -y systemd systemd-sysv && \
+    apt-get install -y dpkg xvfb xserver-xorg-video-dummy xbase-clients python3-packaging && \
+    apt-get install -y ubuntu-mate-desktop && \
+    apt-get install -y cinnamon-desktop-environment && \
+    apt-get install -y nano wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set environment variables to avoid warnings
+ENV DISPLAY=:99
+
+# Set the default command to start systemd
+CMD ["/bin/systemd"]
+
+# Expose necessary ports (optional, based on your needs)
+# EXPOSE 5900
